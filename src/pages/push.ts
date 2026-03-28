@@ -1,7 +1,6 @@
 import { type APIRoute } from "astro";
 import { RESEND_API_KEY, TOKEN } from "astro:env/server";
-import { readdirSync, existsSync, mkdirSync, writeFileSync } from "fs";
-import { f} "path"
+import { existsSync, mkdirSync, writeFileSync } from "fs";
 
 import { Resend } from "resend";
 
@@ -17,24 +16,24 @@ const replacementMap = {
   " ": ".",
   "@": ".at.",
   "/": ".slash.",
-  "$": ".dollar.",
+  $: ".dollar.",
   "[": ".opensq.",
   "]": ".closesq.",
   "(": ".openpr.",
   ")": ".closepr.",
   "{": ".openbr.",
   "}": ".closebr.",
-  "\"": ".quote.",
+  '"': ".quote.",
   "'": ".squote.",
   "#": ".hash.",
-}
+};
 
 function formatFileName(input: string): string {
   let output = input;
   for (r in replacementMap) {
-    output = output.replace(r, replacementMap[r])
+    output = output.replace(r, replacementMap[r]);
   }
-  return output
+  return output;
 }
 
 export const GET: APIRoute = async function (ctx) {
