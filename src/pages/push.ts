@@ -12,7 +12,7 @@ if (!existsSync("./emails")) {
   mkdirSync("./emails");
 }
 
-const replacementMap = {
+const replacementMap: { [key: string]: string } = {
   " ": ".",
   "@": ".at.",
   "/": ".slash.",
@@ -30,7 +30,7 @@ const replacementMap = {
 
 function formatFileName(input: string): string {
   let output = input;
-  for (r in replacementMap) {
+  for (let r in replacementMap) {
     output = output.replace(r, replacementMap[r]);
   }
   return output;
