@@ -4,6 +4,8 @@ import { defineConfig, envField } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import node from "@astrojs/node";
 
+import db from "@astrojs/db";
+
 // https://astro.build/config
 export default defineConfig({
   env: {
@@ -21,6 +23,7 @@ export default defineConfig({
       }),
     },
   },
+
   vite: {
     plugins: [tailwindcss()],
     server: {
@@ -31,4 +34,6 @@ export default defineConfig({
   adapter: node({
     mode: "standalone",
   }),
+
+  integrations: [db()],
 });
