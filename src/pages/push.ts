@@ -1,5 +1,5 @@
 import { type APIRoute } from "astro";
-import { RESEND_API_KEY } from "astro:env/server";
+import { RESEND_API_KEY, TOKEN } from "astro:env/server";
 import { readdirSync, existsSync, mkdirSync, writeFileSync } from "fs";
 
 import { Resend } from "resend";
@@ -15,6 +15,11 @@ if (!existsSync("./emails")) {
 export const GET: APIRoute = async function (ctx) {
   const id = ctx.url.searchParams.get("id");
   const to = ctx.url.searchParams.get("to");
+  const pass = ctx.url.searchParams.get("pass");
+
+  if (pass !== TOKEN) {
+    return new Response("Unauthorized", { status: 401 });
+  }
 
   if (!id) {
     return new Response("No id provided", { status: 400 });

@@ -1,6 +1,5 @@
 // @ts-check
 import { defineConfig, envField } from "astro/config";
-import { loadEnv } from "vite";
 
 import tailwindcss from "@tailwindcss/vite";
 import node from "@astrojs/node";
@@ -14,10 +13,11 @@ export default defineConfig({
         access: "secret",
         optional: false,
       }),
-      CF_HOSTNAME: envField.string({
+      TOKEN: envField.string({
         context: "server",
         access: "secret",
-        optional: false,
+        optional: true,
+        default: "secret",
       }),
     },
   },
