@@ -1,6 +1,7 @@
 import { type APIRoute } from "astro";
 import { RESEND_API_KEY, TOKEN } from "astro:env/server";
 import { readdirSync, existsSync, mkdirSync, writeFileSync } from "fs";
+import { f} "path"
 
 import { Resend } from "resend";
 
@@ -10,6 +11,30 @@ const resend = new Resend(RESEND_API_KEY);
 
 if (!existsSync("./emails")) {
   mkdirSync("./emails");
+}
+
+const replacementMap = {
+  " ": ".",
+  "@": ".at.",
+  "/": ".slash.",
+  "$": ".dollar.",
+  "[": ".opensq.",
+  "]": ".closesq.",
+  "(": ".openpr.",
+  ")": ".closepr.",
+  "{": ".openbr.",
+  "}": ".closebr.",
+  "\"": ".quote.",
+  "'": ".squote.",
+  "#": ".hash.",
+}
+
+function formatFileName(input: string): string {
+  let output = input;
+  for (r in replacementMap) {
+    output = output.replace(r, replacementMap[r])
+  }
+  return output
 }
 
 export const GET: APIRoute = async function (ctx) {
@@ -43,14 +68,14 @@ export const GET: APIRoute = async function (ctx) {
 
   if (email.data.text) {
     writeFileSync(
-      `./emails/${to}/inbox/${encodeURIComponent(email.data.from)}${encodeURIComponent(email.data.subject)}.txt`,
+      `./emails/${to}/inbox/${formatFileName(email.data.from)}${formatFileName(email.data.subject)}.txt`,
       email.data.text,
     );
   }
 
   if (email.data.html) {
     writeFileSync(
-      `./emails/${to}/inbox/${encodeURIComponent(email.data.from)}-${encodeURIComponent(email.data.subject)}.html`,
+      `./emails/${to}/inbox/${formatFileName(email.data.from)}-${formatFileName(email.data.subject)}.html`,
       email.data.html,
     );
   }
