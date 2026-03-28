@@ -67,14 +67,14 @@ export const GET: APIRoute = async function (ctx) {
 
   if (email.data.text) {
     writeFileSync(
-      `./emails/${to}/inbox/${formatFileName(email.data.from)}${formatFileName(email.data.subject)}.txt`,
+      `./emails/${to}/inbox/${formatFileName(email.data.from)}.${formatFileName(email.data.subject)}.txt`,
       email.data.text,
     );
   }
 
   if (email.data.html) {
     writeFileSync(
-      `./emails/${to}/inbox/${formatFileName(email.data.from)}-${formatFileName(email.data.subject)}.html`,
+      `./emails/${to}/inbox/${formatFileName(email.data.from)}.${formatFileName(email.data.subject)}.html`,
       email.data.html,
     );
   }
